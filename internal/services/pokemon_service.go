@@ -6,27 +6,25 @@ import (
 	"pokeapi/internal/repositories"
 )
 
-type PokemonService interface {
+type PokemonServiceInterface interface {
 	GetRandomPokemon() (*models.Pokemon, error)
 }
 
 type pokemonService struct {
-	repo repositories.PokemonRepository
+	repo repositories.PokemonRepositoryInterface
 }
 
-func NewPokemonService(repo repositories.PokemonRepository) PokemonService {
+func NewPokemonService(repo repositories.PokemonRepositoryInterface) PokemonServiceInterface {
 	return &pokemonService{repo: repo}
 }
 
 func (s *pokemonService) GetRandomPokemon() (*models.Pokemon, error) {
-	maxPokemonId := 1025
-	randomID := rand.Intn(maxPokemonId)
-
-	pokemonDTO, err := s.repo.FetchPokemonByID(randomID)
+	maxPokemonID := 1025
+	randomID := rand.Intn(maxPokemonID) + 1
+	dto, err := s.repo.FetchPokemonByID(randomID)
 	if err != nil {
 		return nil, err
 	}
-
-	pokemonModel := pokemonDTO.ToModel()
-	return &pokemonModel, nil
+	pokemon := dto.ToModel()
+	return &pokemon, nil
 }

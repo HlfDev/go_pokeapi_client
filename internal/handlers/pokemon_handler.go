@@ -12,10 +12,10 @@ type PokemonHandler interface {
 }
 
 type pokemonHandler struct {
-	service services.PokemonService
+	service services.PokemonServiceInterface
 }
 
-func NewPokemonHandler(service services.PokemonService) PokemonHandler {
+func NewPokemonHandler(service services.PokemonServiceInterface) PokemonHandler {
 	return &pokemonHandler{service: service}
 }
 
