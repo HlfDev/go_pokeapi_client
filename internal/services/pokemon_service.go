@@ -2,47 +2,31 @@ package services
 
 import (
 	"math/rand"
-	"pokeapi/internal/dtos"
 	"pokeapi/internal/models"
 	"pokeapi/internal/repositories"
 )
 
-func GetRandomPokemon() (*models.Pokemon, error) {
+type PokemonService interface {
+	GetRandomPokemon() (*models.Pokemon, error)
+}
 
-	maxPokemonId := 807
+type pokemonService struct {
+	repo repositories.PokemonRepository
+}
 
-	randomID := rand.Intn(maxPokemonId) + 1
+func NewPokemonService(repo repositories.PokemonRepository) PokemonService {
+	return &pokemonService{repo: repo}
+}
 
-	pokemonDTO, err := repositories.FetchPokemonByID(randomID)
+func (s *pokemonService) GetRandomPokemon() (*models.Pokemon, error) {
+	maxPokemonId := 1025
+	randomID := rand.Intn(maxPokemonId)
+
+	pokemonDTO, err := s.repo.FetchPokemonByID(randomID)
 	if err != nil {
 		return nil, err
 	}
 
-	pokemonModel := convertToPokemonModel(*pokemonDTO)
+	pokemonModel := pokemonDTO.ToModel()
 	return &pokemonModel, nil
-}
-
-func convertToPokemonModel(dto dtos.PokemonDTO) models.Pokemon {
-	var types []string
-	for _, t := range dto.Types {
-		types = append(types, t.Type.Name)
-	}
-
-	var abilities []string
-	for _, a := range dto.Abilities {
-		abilities = append(abilities, a.Ability.Name)
-	}
-
-	return models.Pokemon{
-		ID:        dto.ID,
-		Name:      dto.Name,
-		Height:    dto.Height,
-		Weight:    dto.Weight,
-		Types:     types,
-		Abilities: abilities,
-		Sprites: models.Sprites{
-			FrontDefault: dto.Sprites.FrontDefault,
-			BackDefault:  dto.Sprites.BackDefault,
-		},
-	}
 }

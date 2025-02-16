@@ -8,27 +8,33 @@ import (
 	"pokeapi/internal/dtos"
 )
 
-var pokeAPIBaseURL string
-
-func init() {
-	pokeAPIBaseURL = os.Getenv("POKE_API_BASE_URL")
-
-	if pokeAPIBaseURL == "" {
-		pokeAPIBaseURL = "https://pokeapi.co/api/v2/pokemon/"
-	}
-
+type PokemonRepository interface {
+	FetchPokemonByID(id int) (*dtos.PokemonDTO, error)
 }
 
-func FetchPokemonByID(id int) (*dtos.PokemonDTO, error) {
-	url := fmt.Sprintf("%s%d", pokeAPIBaseURL, id)
-	resp, err := http.Get(url)
+type pokemonRepository struct {
+	client  *http.Client
+	baseURL string
+}
+
+func NewPokemonRepository(client *http.Client) PokemonRepository {
+	baseURL := os.Getenv("POKE_API_BASE_URL")
+	if baseURL == "" {
+		baseURL = "https://pokeapi.co/api/v2/pokemon/"
+	}
+	return &pokemonRepository{client: client, baseURL: baseURL}
+}
+
+func (r *pokemonRepository) FetchPokemonByID(id int) (*dtos.PokemonDTO, error) {
+	url := fmt.Sprintf("%s%d", r.baseURL, id)
+	resp, err := r.client.Get(url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("falha ao buscar Pokémon: status %d", resp.StatusCode)
+		return nil, fmt.Errorf("failed to fetch Pokémon: status %d", resp.StatusCode)
 	}
 
 	var pokemonDTO dtos.PokemonDTO

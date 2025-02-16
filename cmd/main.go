@@ -1,7 +1,7 @@
 package main
 
-import "pokeapi/internal/boostrap"
+import "pokeapi/internal/bootstrap"
 
 func main() {
-	boostrap.Initialize()
+	bootstrap.Initialize()
 }
