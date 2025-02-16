@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>cmd: Go Coverage Report</title>
+        <style>
+                body {
+                        background: white;
+                        color: rgb(80, 80, 80);
+                }
+
+                body,
+                pre,
+                #legend span {
+                        font-family: Menlo, monospace;
+                        font-weight: bold;
+                }
+
+                #topbar {
+                        background: white;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        height: 42px;
+                        border-bottom: 1px solid rgb(80, 80, 80);
+                }
+
+                #content {
+                        margin-top: 50px;
+                }
+
+                #nav,
+                #legend {
+                        float: left;
+                        margin-left: 10px;
+                }
+
+                #legend {
+                        margin-top: 12px;
+                }
+
+                #nav {
+                        margin-top: 10px;
+                }
+
+                #legend span {
+                        margin: 0 5px;
+                }
+
+                .cov0 {
+                        color: rgb(192, 0, 0)
+                }
+
+                .cov1 {
+                        color: rgb(128, 128, 128)
+                }
+
+                .cov2 {
+                        color: rgb(116, 140, 131)
+                }
+
+                .cov3 {
+                        color: rgb(104, 152, 134)
+                }
+
+                .cov4 {
+                        color: rgb(92, 164, 137)
+                }
+
+                .cov5 {
+                        color: rgb(80, 176, 140)
+                }
+
+                .cov6 {
+                        color: rgb(68, 188, 143)
+                }
+
+                .cov7 {
+                        color: rgb(56, 200, 146)
+                }
+
+                .cov8 {
+                        color: rgb(44, 212, 149)
+                }
+
+                .cov9 {
+                        color: rgb(32, 224, 152)
+                }
+
+                .cov10 {
+                        color: rgb(20, 236, 155)
+                }
+        </style>
+</head>
+
+<body>
+        <div id="topbar">
+                <div id="nav">
+                        <select id="files">
+
+                                <option value="file0">pokeapi/cmd/main.go (0.0%)</option>
+
+                                <option value="file1">pokeapi/internal/bootstrap/server.go (92.9%)</option>
+
+                                <option value="file2">pokeapi/internal/cache/cache.go (100.0%)</option>
+
+                                <option value="file3">pokeapi/internal/dtos/pokemon_dto.go (100.0%)</option>
+
+                                <option value="file4">pokeapi/internal/handlers/pokemon_handler.go (100.0%)</option>
+
+                                <option value="file5">pokeapi/internal/logger/logger.go (100.0%)</option>
+
+                                <option value="file6">pokeapi/internal/repositories/pokemon_repository.go (72.0%)
+                                </option>
+
+                                <option value="file7">pokeapi/internal/routes/routes.go (100.0%)</option>
+
+                                <option value="file8">pokeapi/internal/services/pokemon_service.go (100.0%)</option>
+
+                        </select>
+                </div>
+                <div id="legend">
+                        <span>not tracked</span>
+
+                        <span class="cov0">not covered</span>
+                        <span class="cov8">covered</span>
+
+                </div>
+        </div>
+        <div id="content">
+
+                <pre class="file" id="file0" style="display: none">package main
+
+import "pokeapi/internal/bootstrap"
+
+func main() <span class="cov0" title="0">{
+        bootstrap.Initialize()
+}</span>
+</pre>
+
+                <pre class="file" id="file1" style="display: none">package bootstrap
+
+import (
+        "net/http"
+        "os"
+        "pokeapi/internal/cache"
+        "pokeapi/internal/handlers"
+        "pokeapi/internal/logger"
+        "pokeapi/internal/repositories"
+        "pokeapi/internal/routes"
+        "pokeapi/internal/services"
+        "time"
+
+        "github.com/gin-gonic/gin"
+        "github.com/joho/godotenv"
+)
+
+func Initialize() *gin.Engine <span class="cov8" title="1">{
+        godotenv.Load()
+        logger.Init()
+        httpClient := &amp;http.Client{Timeout: 10 * time.Second}
+        c := cache.NewCache(10 * time.Minute)
+        repo := repositories.NewPokemonRepository(httpClient, c)
+        svc := services.NewPokemonService(repo)
+        h := handlers.NewPokemonHandler(svc)
+        r := gin.Default()
+        r.Use(gin.Logger(), gin.Recovery())
+        routes.SetupRoutes(r, h)
+        logger.Log.Info("Server running on port 8080")
+        if os.Getenv("TEST_MODE") != "true" </span><span class="cov0" title="0">{
+                r.Run(":8080")
+        }</span>
+        <span class="cov8" title="1">return r</span>
+}
+</pre>
+
+                <pre class="file" id="file2" style="display: none">package cache
+
+import (
+        "pokeapi/internal/logger"
+        "pokeapi/internal/models"
+        "sync"
+        "time"
+
+        "go.uber.org/zap"
+)
+
+type CacheEntry struct {
+        Pokemon    models.Pokemon
+        Expiration time.Time
+}
+
+type Cache struct {
+        mu    sync.RWMutex
+        store map[int]CacheEntry
+        ttl   time.Duration
+}
+
+func NewCache(ttl time.Duration) *Cache <span class="cov8" title="1">{
+        return &amp;Cache{
+                store: make(map[int]CacheEntry),
+                ttl:   ttl,
+        }
+}</span>
+
+func (c *Cache) Get(id int) (models.Pokemon, bool) <span class="cov8" title="1">{
+        c.mu.RLock()
+        defer c.mu.RUnlock()
+        entry, exists := c.store[id]
+        if !exists || time.Now().After(entry.Expiration) </span><span class="cov8" title="1">{
+                logger.Log.Info("cache miss", zap.Int("id", id))
+                return models.Pokemon{}, false
+        }</span>
+        <span class="cov8" title="1">logger.Log.Info("cache hit", zap.Int("id", id))
+        return entry.Pokemon, true</span>
+}
+
+func (c *Cache) Set(id int, pokemon models.Pokemon) <span class="cov8" title="1">{
+        c.mu.Lock()
+        defer c.mu.Unlock()
+        c.store[id] = CacheEntry{
+                Pokemon:    pokemon,
+                Expiration: time.Now().Add(c.ttl),
+        }
+        logger.Log.Info("cache set", zap.Int("id", id), zap.Duration("ttl", c.ttl))
+}</span>
+</pre>
+
+                <pre class="file" id="file3" style="display: none">package dtos
+
+import "pokeapi/internal/models"
+
+type PokemonDTO struct {
+        ID        int          `json:"id"`
+        Name      string       `json:"name"`
+        Height    int          `json:"height"`
+        Weight    int          `json:"weight"`
+        Types     []TypeDTO    `json:"types"`
+        Abilities []AbilityDTO `json:"abilities"`
+        Sprites   SpritesDTO   `json:"sprites"`
+}
+
+type TypeDTO struct {
+        Slot int `json:"slot"`
+        Type struct {
+                Name string `json:"name"`
+        } `json:"type"`
+}
+
+type AbilityDTO struct {
+        Ability struct {
+                Name string `json:"name"`
+        } `json:"ability"`
+}
+
+type SpritesDTO struct {
+        FrontDefault string `json:"front_default"`
+        BackDefault  string `json:"back_default"`
+}
+
+func (dto *PokemonDTO) ToModel() models.Pokemon <span class="cov8" title="1">{
+        types := make([]string, len(dto.Types))
+        for i, t := range dto.Types </span><span class="cov8" title="1">{
+                types[i] = t.Type.Name
+        }</span>
+
+        <span class="cov8" title="1">abilities := make([]string, len(dto.Abilities))
+        for i, a := range dto.Abilities </span><span class="cov8" title="1">{
+                abilities[i] = a.Ability.Name
+        }</span>
+
+        <span class="cov8" title="1">return models.Pokemon{
+                ID:        dto.ID,
+                Name:      dto.Name,
+                Height:    dto.Height,
+                Weight:    dto.Weight,
+                Types:     types,
+                Abilities: abilities,
+                Sprites: models.Sprites{
+                        FrontDefault: dto.Sprites.FrontDefault,
+                        BackDefault:  dto.Sprites.BackDefault,
+                },
+        }</span>
+}
+</pre>
+
+                <pre class="file" id="file4" style="display: none">package handlers
+
+import (
+        "net/http"
+        "pokeapi/internal/services"
+
+        "github.com/gin-gonic/gin"
+)
+
+type PokemonHandler interface {
+        GetRandomPokemon(c *gin.Context)
+}
+
+type pokemonHandler struct {
+        service services.PokemonServiceInterface
+}
+
+func NewPokemonHandler(service services.PokemonServiceInterface) PokemonHandler <span class="cov8" title="1">{
+        return &amp;pokemonHandler{service: service}
+}</span>
+
+func (h *pokemonHandler) GetRandomPokemon(c *gin.Context) <span class="cov8" title="1">{
+        pokemon, err := h.service.GetRandomPokemon()
+        if err != nil </span><span class="cov8" title="1">{
+                c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                return
+        }</span>
+        <span class="cov8" title="1">c.JSON(http.StatusOK, pokemon)</span>
+}
+</pre>
+
+                <pre class="file" id="file5" style="display: none">package logger
+
+import "go.uber.org/zap"
+
+var Log *zap.Logger
+
+func Init() <span class="cov8" title="1">{
+        l, _ := zap.NewProduction()
+        Log = l
+}</span>
+</pre>
+
+                <pre class="file" id="file6" style="display: none">package repositories
+
+import (
+        "encoding/json"
+        "fmt"
+        "net/http"
+        "pokeapi/internal/cache"
+        "pokeapi/internal/dtos"
+        "pokeapi/internal/logger"
+
+        "go.uber.org/zap"
+)
+
+type PokemonRepositoryInterface interface {
+        FetchPokemonByID(id int) (*dtos.PokemonDTO, error)
+}
+
+type pokemonRepository struct {
+        client  *http.Client
+        cache   *cache.Cache
+        baseURL string
+}
+
+func NewPokemonRepository(client *http.Client, cache *cache.Cache) PokemonRepositoryInterface <span class="cov0" title="0">{
+        baseURL := "https://pokeapi.co/api/v2/pokemon/"
+        return &amp;pokemonRepository{client: client, cache: cache, baseURL: baseURL}
+}</span>
+
+func (r *pokemonRepository) FetchPokemonByID(id int) (*dtos.PokemonDTO, error) <span class="cov8" title="1">{
+        if pokemon, found := r.cache.Get(id); found </span><span class="cov0" title="0">{
+                dto := dtos.PokemonDTO{
+                        ID:     pokemon.ID,
+                        Name:   pokemon.Name,
+                        Height: pokemon.Height,
+                        Weight: pokemon.Weight,
+                        Sprites: dtos.SpritesDTO{
+                                FrontDefault: pokemon.Sprites.FrontDefault,
+                                BackDefault:  pokemon.Sprites.BackDefault,
+                        },
+                }
+                logger.Log.Info("repository cache hit", zap.Int("id", id))
+                return &amp;dto, nil
+        }</span>
+        <span class="cov8" title="1">url := fmt.Sprintf("%s%d", r.baseURL, id)
+        logger.Log.Info("repository API call", zap.Int("id", id), zap.String("url", url))
+        resp, err := r.client.Get(url)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("repository API error", zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">defer resp.Body.Close()
+        if resp.StatusCode != http.StatusOK </span><span class="cov8" title="1">{
+                err = fmt.Errorf("status %d", resp.StatusCode)
+                logger.Log.Error("repository API status error", zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">var dto dtos.PokemonDTO
+        if err := json.NewDecoder(resp.Body).Decode(&amp;dto); err != nil </span><span class="cov8" title="1">{
+                logger.Log.Error("repository decode error", zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">pokemonModel := dto.ToModel()
+        r.cache.Set(id, pokemonModel)
+        logger.Log.Info("repository set cache", zap.Int("id", id))
+        return &amp;dto, nil</span>
+}
+</pre>
+
+                <pre class="file" id="file7" style="display: none">package routes
+
+import (
+        "pokeapi/internal/handlers"
+
+        "github.com/gin-gonic/gin"
+)
+
+func SetupRoutes(e *gin.Engine, handler handlers.PokemonHandler) <span class="cov8" title="1">{
+        api := e.Group("/api/v1")
+        </span><span class="cov8" title="1">{
+                api.GET("/pokemon/random", handler.GetRandomPokemon)
+        }</span>
+}
+</pre>
+
+                <pre class="file" id="file8" style="display: none">package services
+
+import (
+        "math/rand"
+        "pokeapi/internal/models"
+        "pokeapi/internal/repositories"
+)
+
+type PokemonServiceInterface interface {
+        GetRandomPokemon() (*models.Pokemon, error)
+}
+
+type pokemonService struct {
+        repo repositories.PokemonRepositoryInterface
+}
+
+func NewPokemonService(repo repositories.PokemonRepositoryInterface) PokemonServiceInterface <span class="cov8" title="1">{
+        return &amp;pokemonService{repo: repo}
+}</span>
+
+func (s *pokemonService) GetRandomPokemon() (*models.Pokemon, error) <span class="cov8" title="1">{
+        maxPokemonID := 1025
+        randomID := rand.Intn(maxPokemonID) + 1
+        dto, err := s.repo.FetchPokemonByID(randomID)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">pokemon := dto.ToModel()
+        return &amp;pokemon, nil</span>
+}
+</pre>
+
+        </div>
+</body>
+<script>
+        (function () {
+                var files = document.getElementById('files');
+                var visible;
+                files.addEventListener('change', onChange, false);
+                function select(part) {
+                        if (visible)
+                                visible.style.display = 'none';
+                        visible = document.getElementById(part);
+                        if (!visible)
+                                return;
+                        files.value = part;
+                        visible.style.display = 'block';
+                        location.hash = part;
+                }
+                function onChange() {
+                        select(files.value);
+                        window.scrollTo(0, 0);
+                }
+                if (location.hash != "") {
+                        select(location.hash.substr(1));
+                }
+                if (!visible) {
+                        select("file0");
+                }
+        })();
+</script>
+
+</html>

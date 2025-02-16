@@ -20,7 +20,7 @@ func NewPokemonService(repo repositories.PokemonRepositoryInterface) PokemonServ
 
 func (s *pokemonService) GetRandomPokemon() (*models.Pokemon, error) {
 	maxPokemonID := 1025
-	randomID := rand.Intn(maxPokemonID) + 1
+	randomID := rand.Intn(maxPokemonID)
 	dto, err := s.repo.FetchPokemonByID(randomID)
 	if err != nil {
 		return nil, err
