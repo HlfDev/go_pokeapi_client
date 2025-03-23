@@ -19,6 +19,15 @@ func NewPokemonHandler(service services.PokemonServiceInterface) PokemonHandler 
 	return &pokemonHandler{service: service}
 }
 
+// GetRandomPokemon godoc
+// @Summary      Get a random Pokemon
+// @Description  Fetches a random Pokemon with its data
+// @Tags         pokemon
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.Pokemon
+// @Failure      500  {object}  map[string]string
+// @Router       /pokemon/random [get]
 func (h *pokemonHandler) GetRandomPokemon(c *gin.Context) {
 	pokemon, err := h.service.GetRandomPokemon()
 	if err != nil {

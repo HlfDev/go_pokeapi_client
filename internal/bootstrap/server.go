@@ -11,8 +11,13 @@ import (
 	"pokeapi/internal/services"
 	"time"
 
+	// Import the docs
+	_ "pokeapi/docs"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func Initialize() *gin.Engine {
@@ -25,6 +30,11 @@ func Initialize() *gin.Engine {
 	h := handlers.NewPokemonHandler(svc)
 	r := gin.Default()
 	r.Use(gin.Logger(), gin.Recovery())
+
+	// Setup Swagger
+	// The URL will be http://localhost:8080/swagger/index.html
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	routes.SetupRoutes(r, h)
 	logger.Log.Info("Server running on port 8080")
 	if os.Getenv("TEST_MODE") != "true" {

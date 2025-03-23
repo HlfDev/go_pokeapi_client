@@ -1,0 +1,79 @@
+basePath: /api/v1
+definitions:
+  models.Pokemon:
+    properties:
+      abilities:
+        description: Abilities of the Pokemon
+        example:
+        - '["static"]'
+        items:
+          type: string
+        type: array
+      height:
+        description: Height in decimeters
+        example: 4
+        type: integer
+      id:
+        description: The unique identifier for the Pokemon
+        example: 25
+        type: integer
+      name:
+        description: The name of the Pokemon
+        example: pikachu
+        type: string
+      sprites:
+        allOf:
+        - $ref: '#/definitions/models.Sprites'
+        description: Visual representations of the Pokemon
+      types:
+        description: Types of the Pokemon
+        example:
+        - '["electric"]'
+        items:
+          type: string
+        type: array
+      weight:
+        description: Weight in hectograms
+        example: 60
+        type: integer
+    type: object
+  models.Sprites:
+    properties:
+      back_default:
+        description: URL to the back default sprite
+        example: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png
+        type: string
+      front_default:
+        description: URL to the front default sprite
+        example: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: A simple REST API for Pokemon data
+  title: Pokemon API
+  version: "1.0"
+paths:
+  /pokemon/random:
+    get:
+      consumes:
+      - application/json
+      description: Fetches a random Pokemon with its data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Pokemon'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get a random Pokemon
+      tags:
+      - pokemon
+swagger: "2.0"
