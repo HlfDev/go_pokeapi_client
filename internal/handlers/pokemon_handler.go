@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/HlfDev/pokeapi-wrapper/internal/services"
+	"github.com/HlfDev/go_pokeapi_client/internal/services"
 
 	"github.com/gin-gonic/gin"
 )

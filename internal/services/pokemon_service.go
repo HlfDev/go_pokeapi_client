@@ -3,8 +3,8 @@ package services
 import (
 	"math/rand"
 
-	"github.com/HlfDev/pokeapi-wrapper/internal/models"
-	"github.com/HlfDev/pokeapi-wrapper/internal/repositories"
+	"github.com/HlfDev/go_pokeapi_client/internal/models"
+	"github.com/HlfDev/go_pokeapi_client/internal/repositories"
 )
 
 type PokemonServiceInterface interface {

@@ -1,6 +1,6 @@
 package dtos
 
-import "github.com/HlfDev/pokeapi-wrapper/internal/models"
+import "github.com/HlfDev/go_pokeapi_client/internal/models"
 
 type PokemonDTO struct {
 	ID        int          `json:"id"`

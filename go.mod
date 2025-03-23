@@ -1,4 +1,4 @@
-module github.com/HlfDev/pokeapi-wrapper
+module github.com/HlfDev/go_pokeapi_client
 
 go 1.23.4
 

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/HlfDev/pokeapi-wrapper/internal/cache"
-	"github.com/HlfDev/pokeapi-wrapper/internal/dtos"
-	"github.com/HlfDev/pokeapi-wrapper/internal/logger"
+	"github.com/HlfDev/go_pokeapi_client/internal/cache"
+	"github.com/HlfDev/go_pokeapi_client/internal/dtos"
+	"github.com/HlfDev/go_pokeapi_client/internal/logger"
 
 	"go.uber.org/zap"
 )

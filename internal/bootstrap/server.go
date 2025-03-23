@@ -5,15 +5,15 @@ import (
 	"os"
 	"time"
 
-	"github.com/HlfDev/pokeapi-wrapper/internal/cache"
-	"github.com/HlfDev/pokeapi-wrapper/internal/handlers"
-	"github.com/HlfDev/pokeapi-wrapper/internal/logger"
-	"github.com/HlfDev/pokeapi-wrapper/internal/repositories"
-	"github.com/HlfDev/pokeapi-wrapper/internal/routes"
-	"github.com/HlfDev/pokeapi-wrapper/internal/services"
+	"github.com/HlfDev/go_pokeapi_client/internal/cache"
+	"github.com/HlfDev/go_pokeapi_client/internal/handlers"
+	"github.com/HlfDev/go_pokeapi_client/internal/logger"
+	"github.com/HlfDev/go_pokeapi_client/internal/repositories"
+	"github.com/HlfDev/go_pokeapi_client/internal/routes"
+	"github.com/HlfDev/go_pokeapi_client/internal/services"
 
 	// Import the docs
-	_ "github.com/HlfDev/pokeapi-wrapper/docs"
+	_ "github.com/HlfDev/go_pokeapi_client/docs"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"

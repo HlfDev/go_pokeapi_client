@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/HlfDev/pokeapi-wrapper/internal/models"
+	"github.com/HlfDev/go_pokeapi_client/internal/models"
 
 	"github.com/gin-gonic/gin"
 )

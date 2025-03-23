@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/HlfDev/pokeapi-wrapper/internal/handlers"
+	"github.com/HlfDev/go_pokeapi_client/internal/handlers"
 
 	"github.com/gin-gonic/gin"
 )

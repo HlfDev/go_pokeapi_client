@@ -1,6 +1,6 @@
 package main
 
-import "github.com/HlfDev/pokeapi-wrapper/internal/bootstrap"
+import "github.com/HlfDev/go_pokeapi_client/internal/bootstrap"
 
 // @title           Pokemon API
 // @version         1.0

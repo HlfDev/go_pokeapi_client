@@ -4,8 +4,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/HlfDev/pokeapi-wrapper/internal/logger"
-	"github.com/HlfDev/pokeapi-wrapper/internal/models"
+	"github.com/HlfDev/go_pokeapi_client/internal/logger"
+	"github.com/HlfDev/go_pokeapi_client/internal/models"
 
 	"go.uber.org/zap"
 )
