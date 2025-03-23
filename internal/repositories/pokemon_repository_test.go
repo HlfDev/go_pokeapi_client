@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"pokeapi/internal/cache"
-	"pokeapi/internal/logger"
+	"github.com/HlfDev/pokeapi-wrapper/internal/cache"
+	"github.com/HlfDev/pokeapi-wrapper/internal/logger"
 )
 
 func init() {

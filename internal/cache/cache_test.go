@@ -2,10 +2,11 @@
 package cache
 
 import (
-	"pokeapi/internal/logger"
-	"pokeapi/internal/models"
 	"testing"
 	"time"
+
+	"github.com/HlfDev/pokeapi-wrapper/internal/logger"
+	"github.com/HlfDev/pokeapi-wrapper/internal/models"
 )
 
 func TestCacheSetAndGet(t *testing.T) {

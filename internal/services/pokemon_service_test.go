@@ -2,8 +2,9 @@ package services
 
 import (
 	"errors"
-	"pokeapi/internal/dtos"
 	"testing"
+
+	"github.com/HlfDev/pokeapi-wrapper/internal/dtos"
 )
 
 type mockRepo struct {

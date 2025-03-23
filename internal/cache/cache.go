@@ -1,10 +1,11 @@
 package cache
 
 import (
-	"pokeapi/internal/logger"
-	"pokeapi/internal/models"
 	"sync"
 	"time"
+
+	"github.com/HlfDev/pokeapi-wrapper/internal/logger"
+	"github.com/HlfDev/pokeapi-wrapper/internal/models"
 
 	"go.uber.org/zap"
 )

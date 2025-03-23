@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"pokeapi/internal/cache"
-	"pokeapi/internal/dtos"
-	"pokeapi/internal/logger"
+
+	"github.com/HlfDev/pokeapi-wrapper/internal/cache"
+	"github.com/HlfDev/pokeapi-wrapper/internal/dtos"
+	"github.com/HlfDev/pokeapi-wrapper/internal/logger"
 
 	"go.uber.org/zap"
 )

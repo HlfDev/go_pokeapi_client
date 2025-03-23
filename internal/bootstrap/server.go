@@ -3,16 +3,17 @@ package bootstrap
 import (
 	"net/http"
 	"os"
-	"pokeapi/internal/cache"
-	"pokeapi/internal/handlers"
-	"pokeapi/internal/logger"
-	"pokeapi/internal/repositories"
-	"pokeapi/internal/routes"
-	"pokeapi/internal/services"
 	"time"
 
+	"github.com/HlfDev/pokeapi-wrapper/internal/cache"
+	"github.com/HlfDev/pokeapi-wrapper/internal/handlers"
+	"github.com/HlfDev/pokeapi-wrapper/internal/logger"
+	"github.com/HlfDev/pokeapi-wrapper/internal/repositories"
+	"github.com/HlfDev/pokeapi-wrapper/internal/routes"
+	"github.com/HlfDev/pokeapi-wrapper/internal/services"
+
 	// Import the docs
-	_ "pokeapi/docs"
+	_ "github.com/HlfDev/pokeapi-wrapper/docs"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
