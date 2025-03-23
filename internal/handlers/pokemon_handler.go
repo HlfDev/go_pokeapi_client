@@ -21,9 +21,8 @@ func NewPokemonHandler(service services.PokemonServiceInterface) PokemonHandler 
 
 // GetRandomPokemon godoc
 // @Summary      Get a random Pokemon
-// @Description  Fetches a random Pokemon with its data
+// @Description  Fetches a random Pokemon
 // @Tags         pokemon
-// @Accept       json
 // @Produce      json
 // @Success      200  {object}  models.Pokemon
 // @Failure      500  {object}  map[string]string

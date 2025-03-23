@@ -10,6 +10,9 @@ A simple REST API for Pokemon data built with Go and Gin.
 - [Configuration](#configuration)
 - [Running the Application](#running-the-application)
 - [API Documentation](#api-documentation)
+  - [Using Swagger UI](#using-swagger-ui)
+  - [Regenerating Swagger Documentation](#regenerating-swagger-documentation)
+  - [Available Endpoints](#available-endpoints)
 - [Development](#development)
 - [Testing](#testing)
 - [Deployment](#deployment)
@@ -49,19 +52,14 @@ The application uses environment variables for configuration. You can set these 
 Example `.env` file:
 
 ```
-PORT=8080
-GIN_MODE=debug
-SWAGGER_HOST=localhost:8080
+POKE_API_BASE_URL=https://pokeapi.co/api/v2/pokemon/
 ```
 
 Available configuration options:
 
-| Variable     | Description                             | Default       |
-|-------------|-----------------------------------------|---------------|
-| PORT        | Port the server will listen on          | 8080          |
-| GIN_MODE    | Gin mode (debug or release)             | debug         |
-| SWAGGER_HOST| Host used in Swagger documentation      | localhost:8080|
-| TEST_MODE   | Set to 'true' for testing               | false         |
+| Variable          | Description                              | Default                              |
+|-------------------|------------------------------------------|--------------------------------------|
+| POKE_API_BASE_URL | Base URL for the Pokemon API             | https://pokeapi.co/api/v2/pokemon/  |
 
 ## Running the Application
 
@@ -89,11 +87,21 @@ Run the compiled binary:
 
 ## API Documentation
 
-The API is documented using Swagger. After starting the application, you can access the Swagger UI at:
+The API is documented using Swagger. This provides interactive documentation where you can explore the API endpoints and even test them directly from your browser.
+
+### Using Swagger UI
+
+After starting the application, you can access the Swagger UI at:
 
 ```
 http://localhost:8080/swagger/index.html
 ```
+
+The Swagger UI provides:
+- A list of all available endpoints
+- Interactive documentation that lets you try out API calls
+- Schema information for request and response models
+- Detailed descriptions of parameters and response codes
 
 ### Regenerating Swagger Documentation
 
@@ -102,6 +110,8 @@ If you make changes to the API endpoints or models, you need to regenerate the S
 ```bash
 go run github.com/swaggo/swag/cmd/swag init -g cmd/main.go
 ```
+
+This command will scan your codebase for Swagger annotations and generate updated documentation.
 
 ### Available Endpoints
 
@@ -123,7 +133,7 @@ go run github.com/swaggo/swag/cmd/swag init -g cmd/main.go
 │   ├── cache/           # Caching implementation
 │   ├── handlers/        # HTTP handlers
 │   ├── logger/          # Logging configuration
-│   ├── middleware/      # HTTP middleware
+│   ├── middleware/      # HTTP middleware examples
 │   ├── models/          # Data models
 │   ├── repositories/    # Data access layer
 │   ├── routes/          # Route definitions
@@ -132,6 +142,7 @@ go run github.com/swaggo/swag/cmd/swag init -g cmd/main.go
 ├── .env                 # Environment variables
 ├── go.mod               # Go module definition
 ├── go.sum               # Go module checksums
+├── Dockerfile           # Docker configuration
 └── README.md            # This file
 ```
 
@@ -161,10 +172,8 @@ docker run -p 8080:8080 pokemon-api
 
 ### Environment Variables for Production
 
-For production deployment, set the following environment variables:
+For production deployment, consider setting these environment variables:
 
 ```
-GIN_MODE=release
-PORT=8080
-SWAGGER_HOST=your-production-domain.com
+POKE_API_BASE_URL=https://pokeapi.co/api/v2/pokemon/
 ``` 

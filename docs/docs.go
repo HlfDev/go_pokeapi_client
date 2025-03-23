@@ -17,10 +17,7 @@ const docTemplate = `{
     "paths": {
         "/pokemon/random": {
             "get": {
-                "description": "Fetches a random Pokemon with its data",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Fetches a random Pokemon",
                 "produces": [
                     "application/json"
                 ],
@@ -53,7 +50,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "abilities": {
-                    "description": "Abilities of the Pokemon",
+                    "description": "Abilities",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -63,22 +60,22 @@ const docTemplate = `{
                     ]
                 },
                 "height": {
-                    "description": "Height in decimeters",
+                    "description": "Height",
                     "type": "integer",
                     "example": 4
                 },
                 "id": {
-                    "description": "The unique identifier for the Pokemon",
+                    "description": "ID of the Pokemon",
                     "type": "integer",
                     "example": 25
                 },
                 "name": {
-                    "description": "The name of the Pokemon",
+                    "description": "Name",
                     "type": "string",
                     "example": "pikachu"
                 },
                 "sprites": {
-                    "description": "Visual representations of the Pokemon",
+                    "description": "Sprites",
                     "allOf": [
                         {
                             "$ref": "#/definitions/models.Sprites"
@@ -86,7 +83,7 @@ const docTemplate = `{
                     ]
                 },
                 "types": {
-                    "description": "Types of the Pokemon",
+                    "description": "Types",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -96,7 +93,7 @@ const docTemplate = `{
                     ]
                 },
                 "weight": {
-                    "description": "Weight in hectograms",
+                    "description": "Weight",
                     "type": "integer",
                     "example": 60
                 }
@@ -106,12 +103,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "back_default": {
-                    "description": "URL to the back default sprite",
+                    "description": "Back sprite",
                     "type": "string",
                     "example": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png"
                 },
                 "front_default": {
-                    "description": "URL to the front default sprite",
+                    "description": "Front sprite",
                     "type": "string",
                     "example": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
                 }

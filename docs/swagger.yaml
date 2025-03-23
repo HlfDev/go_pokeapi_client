@@ -3,48 +3,48 @@ definitions:
   models.Pokemon:
     properties:
       abilities:
-        description: Abilities of the Pokemon
+        description: Abilities
         example:
         - '["static"]'
         items:
           type: string
         type: array
       height:
-        description: Height in decimeters
+        description: Height
         example: 4
         type: integer
       id:
-        description: The unique identifier for the Pokemon
+        description: ID of the Pokemon
         example: 25
         type: integer
       name:
-        description: The name of the Pokemon
+        description: Name
         example: pikachu
         type: string
       sprites:
         allOf:
         - $ref: '#/definitions/models.Sprites'
-        description: Visual representations of the Pokemon
+        description: Sprites
       types:
-        description: Types of the Pokemon
+        description: Types
         example:
         - '["electric"]'
         items:
           type: string
         type: array
       weight:
-        description: Weight in hectograms
+        description: Weight
         example: 60
         type: integer
     type: object
   models.Sprites:
     properties:
       back_default:
-        description: URL to the back default sprite
+        description: Back sprite
         example: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png
         type: string
       front_default:
-        description: URL to the front default sprite
+        description: Front sprite
         example: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png
         type: string
     type: object
@@ -57,9 +57,7 @@ info:
 paths:
   /pokemon/random:
     get:
-      consumes:
-      - application/json
-      description: Fetches a random Pokemon with its data
+      description: Fetches a random Pokemon
       produces:
       - application/json
       responses:

@@ -20,6 +20,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// Initialize sets up the application.
 func Initialize() *gin.Engine {
 	godotenv.Load()
 	logger.Init()
@@ -31,8 +32,7 @@ func Initialize() *gin.Engine {
 	r := gin.Default()
 	r.Use(gin.Logger(), gin.Recovery())
 
-	// Setup Swagger
-	// The URL will be http://localhost:8080/swagger/index.html
+	// Setup Swagger at http://localhost:8080/swagger/index.html
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	routes.SetupRoutes(r, h)
